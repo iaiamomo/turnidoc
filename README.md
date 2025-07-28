@@ -32,7 +32,7 @@
     ```
     Comando avanzato con icona e nome personalizzato:
     ```bash
-    pyinstaller --onefile --windowed --name "ExcelProcessor" --icon=icon.ico gui.py
+    pyinstaller --onefile --windowed --name "TurniProcessor" --icon=icon.ico gui.py
     ```
     Opzioni PyInstaller utili:
     ```
@@ -43,3 +43,7 @@
     --add-data: Aggiunge file extra se necessari
     ```
 
+4. Per ridurre la dimensione dell'.exe
+    ```bash
+    pyinstaller --onefile --windowed --optimize=2 --name "TurniProcessor" --icon=icon.ico gui.py
+    ```

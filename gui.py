@@ -28,39 +28,46 @@ class ExcelProcessor:
         main_frame.columnconfigure(1, weight=1)
         
         # Titolo
-        title_label = ttk.Label(main_frame, text="Turni File Processor", font=("Arial", 16, "bold"))
+        title_label = ttk.Label(main_frame, 
+                                text="Turni File Processor",
+                                font=("Arial", 16, "bold"))
         title_label.grid(row=0, column=0, columnspan=3, pady=(0, 20))
+
+        # Informazioni sull'app
+        ttk.Label(main_frame, 
+                  text="Ricorda di utilizzare celle singole e che l'ordine delle ultime colonne sia amb, 104, agg, ferie."
+                  ).grid(row=1, column=0, columnspan=3, pady=(0, 10))
         
         # Sezione selezione file input
-        ttk.Label(main_frame, text="File di input:").grid(row=1, column=0, sticky=tk.W, pady=5)
+        ttk.Label(main_frame, text="File di input:").grid(row=2, column=0, sticky=tk.W, pady=5)
         self.input_label = ttk.Label(main_frame, text="Nessun file selezionato", foreground="gray")
-        self.input_label.grid(row=1, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=5)
+        self.input_label.grid(row=2, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=5)
         
         input_btn = ttk.Button(main_frame, text="Seleziona File", command=self.select_input_file)
-        input_btn.grid(row=1, column=2, padx=(10, 0), pady=5)
+        input_btn.grid(row=2, column=2, padx=(10, 0), pady=5)
         
         # Sezione selezione file output
-        ttk.Label(main_frame, text="Salva come:").grid(row=2, column=0, sticky=tk.W, pady=5)
+        ttk.Label(main_frame, text="Salva come:").grid(row=3, column=0, sticky=tk.W, pady=5)
         self.output_label = ttk.Label(main_frame, text="Nessuna destinazione selezionata", foreground="gray")
-        self.output_label.grid(row=2, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=5)
+        self.output_label.grid(row=3, column=1, sticky=(tk.W, tk.E), padx=(10, 0), pady=5)
         
         output_btn = ttk.Button(main_frame, text="Scegli Destinazione", command=self.select_output_file)
-        output_btn.grid(row=2, column=2, padx=(10, 0), pady=5)
+        output_btn.grid(row=3, column=2, padx=(10, 0), pady=5)
         
         # Separatore
         separator = ttk.Separator(main_frame, orient='horizontal')
-        separator.grid(row=3, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=20)
+        separator.grid(row=4, column=0, columnspan=3, sticky=(tk.W, tk.E), pady=20)
         
         # Pulsante di processamento
         process_btn = ttk.Button(main_frame, text="Processa File", command=self.process_file)
-        process_btn.grid(row=5, column=0, columnspan=3, pady=20)
+        process_btn.grid(row=6, column=0, columnspan=3, pady=20)
         
         # Area di log
         log_frame = ttk.LabelFrame(main_frame, text="Log", padding="5")
-        log_frame.grid(row=7, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=10)
+        log_frame.grid(row=8, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=10)
         log_frame.columnconfigure(0, weight=1)
         log_frame.rowconfigure(0, weight=1)
-        main_frame.rowconfigure(7, weight=1)
+        main_frame.rowconfigure(8, weight=1)
         
         self.log_text = tk.Text(log_frame, height=8)
         self.log_text.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
@@ -136,9 +143,9 @@ class ExcelProcessor:
             output_ext = Path(self.output_file).suffix.lower()
             
             if output_ext == '.csv':
-                df_processed.to_csv(self.output_file, index=False)
+                df_processed.to_csv(self.output_file, index=False, header=False)
             else:
-                df_processed.to_excel(self.output_file, index=False)
+                df_processed.to_excel(self.output_file, index=False, header=False)
             
             self.log_message(f"File salvato con successo: {self.output_file}")
             messagebox.showinfo("Successo", "File processato e salvato con successo!")

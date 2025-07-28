@@ -213,6 +213,7 @@ def main():
     print("Extracted doctors:", docs)
 
     new_data = process_data(df, docs, columns[2:])
+    
     new_new_data = {
         " ": [""] * len(new_data["day"]),
         "number": new_data["number"],
@@ -245,36 +246,45 @@ def main():
     
 
 def process_turni(df):
+    liberi_professionisti = ["zomparelli", "cutar"]
+    
     df, columns = preprocess_data(df)
 
     docs = extract_docs(df, columns[2:])
 
     new_data = process_data(df, docs, columns[2:])
-    new_df = pandas.DataFrame(new_data)
+
+    # Create a new dictionary with ordered keys
+    new_new_data = {
+        " ": [""] * len(new_data["day"]),
+        "number": new_data["number"],
+        "day": new_data["day"]
+    }
+    new_new_data[" "][0] = "TURNI UOC MEDICINA GENERALE HPP,"
+    docs = sorted(docs)
+    for doc in docs:
+        if doc in liberi_professionisti:
+            continue
+        new_new_data[doc] = new_data[doc]
+    new_new_data[""] = [""] * len(new_data["day"])
+    liberi_professionisti = sorted(liberi_professionisti)
+    for doc in liberi_professionisti:
+        new_new_data[doc] = new_data[doc]
+
+    new_df = pandas.DataFrame(new_new_data)
     doctors = new_df.columns
     # Put the first letter of the doctor name as capital
     doctors = [doc.capitalize() for doc in doctors]
     # Transpose the DataFrame to have doctors as rows and days as columns
     new_df = new_df.T
-    # Add the first column with the doctor names
+    # Add the first column with the doctor names capitalized
     new_df.insert(0, "doc", doctors)
-    columns = new_df.columns.tolist()
-    for i in range(1, len(columns)):
-        columns[i] = columns[i]+1
-    new_df.columns = columns
 
     return new_df
 
 if __name__ == "__main__":
     main()
 
-
-'''
-excel deve essere tutto a celle singole ad esempio: mattina deve essere doppio
-chiedere info riguardo lo / nel caso di 2 o più prestazioni
-giorni di festa non so bene come gestirli
-no nomi abbreviati o serve processarli?
-'''
 
 '''
 inserimento manuale:
